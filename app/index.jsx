@@ -1,20 +1,35 @@
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import { Link } from "expo-router";
-import Logo from "../assets/adaptive-icon.png";
+import ThemedView from "../components/ThemedView";
+import ThemedLogo from "../components/ThemedLogo";
+import Spacer from "../components/Spacer";
+import ThemedText from "../components/ThemeText";
 
 const Home = () => {
   return (
-    <View style={styles.container}>
-      <Image source={Logo} style={{ height: 100, width: 150 }} />
-      <Text style={styles.title}>The Number 1</Text>
-      <Text style={{ margin: 10 }}>Reading List App</Text>
+    <ThemedView style={styles.container}>
+      <ThemedLogo />
+      <Spacer height={20}/>
+      <ThemedText style={styles.title} title={true}>The Number 1</ThemedText>
+      <Spacer />
+      <ThemedText>Reading List App</ThemedText>
+      <Spacer />
       <Link
         href={"/about"}
-        style={{ padding: 20, color: "white", backgroundColor: "black" }}
+        style={{ padding: 20 }}
       >
-        About page
+        <ThemedText>About page</ThemedText>
       </Link>
-    </View>
+      <Link
+        href={"/contact"}
+        style={{
+          padding: 20,
+          marginVertical: 10,
+        }}
+      >
+        <ThemedText>Contact page</ThemedText>
+      </Link>
+    </ThemedView>
   );
 };
 
@@ -28,6 +43,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: "bold",
-    fontSize: 18,
+    fontSize: 23,
   },
 });
