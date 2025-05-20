@@ -24,10 +24,17 @@ const Home = () => {
         href={"/register"}
         style={{
           padding: 20,
-          marginVertical: 10,
         }}
       >
         <ThemedText>Register page</ThemedText>
+      </Link>
+      <Link
+        href={"/profile"}
+        style={{
+          padding: 20,
+        }}
+      >
+        <ThemedText>Profile page</ThemedText>
       </Link>
     </ThemedView>
   );

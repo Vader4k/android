@@ -1,9 +1,9 @@
-import { StyleSheet, Pressable, Text } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import { Link } from "expo-router";
 import ThemedView from "../../components/ThemedView";
 import ThemedText from "../../components/ThemeText";
 import Spacer from "../../components/Spacer";
-import { Colors } from "../../constants/colors";
+import ThemedButton from "../../components/ThemedButton";
 
 const Register = () => {
 
@@ -17,9 +17,9 @@ const Register = () => {
       <ThemedText title={true} style={styles.title}>
         Register for an Account
       </ThemedText>
-      <Pressable onPress={handleSubmit} style={({pressed}) => [styles.btn, pressed && styles.pressed]}>
-        <Text style={{color: '#f2f2f2', textAlign: 'center'}}>Login</Text>
-      </Pressable>
+      <ThemedButton onPress={handleSubmit}>
+        <Text style={{color: '#f2f2f2', textAlign: 'center'}}>Register</Text>
+      </ThemedButton>
       <Spacer height={100} />
       <Link href={"/login"} style={styles.link}>
         <ThemedText style={{ textAlign: "center" }}>
@@ -39,15 +39,7 @@ const styles = StyleSheet.create({
   },
   title: {
     textAlign: "center",
-    fontSize: 18,
+    fontSize: 24,
     marginBottom: 30,
-  },
-  btn: {
-    backgroundColor: Colors.primary,
-    padding: 15,
-    borderRadius: 5,
-  },
-  pressed: {
-    opacity: 0.8,
   },
 });
