@@ -1,5 +1,5 @@
 import { Stack } from "expo-router";
-import { StyleSheet, useColorScheme } from "react-native";
+import { useColorScheme } from "react-native";
 import { Colors } from "../../constants/colors";
 import { StatusBar } from "expo-status-bar";
 
@@ -21,4 +21,3 @@ const RootLayout = () => {
 
 export default RootLayout;
 
-const styles = StyleSheet.create({});

@@ -1,6 +1,7 @@
 import { StyleSheet, Text } from "react-native";
 import { Link } from "expo-router";
 import { useState } from "react";
+import { useUserContext } from "../../context/userContext";
 
 //themed component
 import ThemedView from "../../components/ThemedView";
@@ -13,8 +14,14 @@ const login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = () => {
-    console.log("Logging in...", email, password);
+  const { login } = useUserContext();
+
+  const handleSubmit = async () => {
+    try {
+      await login(email, password);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -33,7 +40,7 @@ const login = () => {
         value={email}
       />
 
-        <ThemedTextInput
+      <ThemedTextInput
         placeholder="Password"
         style={{ width: "80%", marginBottom: 20, marginHorizontal: "auto" }}
         onChangeText={setPassword}

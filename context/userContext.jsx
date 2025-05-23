@@ -1,22 +1,35 @@
-import { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useState } from "react";
+import { account } from "../lib/appwrite";
+import { ID } from "react-native-appwrite";
 
 export const userContext = createContext();
 
 export function UserProvider({ children }) {
   const [user, setUser] = useState(null);
 
-  async function login(email, password) {}
+  async function login(email, password) {
+    try {
+      await account.createEmailPasswordSession(email, password)
+      const response = await account.get();
+      setUser(response)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
-  async function register(email, password) {}
+  async function register(email, password) {
+    try {
+      await account.create(ID.unique(), email, password);
+      await login(email, password)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   async function logOut() {}
 
-  const memoriedUser = useMemo(() => {
-    user;
-  }, []);
-
   return (
-    <userContext.Provider value={{ memoriedUser, login, register, logOut }}>
+    <userContext.Provider value={{ user, login, register, logOut }}>
       {children}
     </userContext.Provider>
   );
