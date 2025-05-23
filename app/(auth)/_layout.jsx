@@ -1,13 +1,10 @@
 import { Stack } from "expo-router";
-import { useColorScheme } from "react-native";
-import { Colors } from "../../constants/colors";
 import { StatusBar } from "expo-status-bar";
+import GuestOnly from "../../components/auth/GuestOnly";
 
 const RootLayout = () => {
-  const colorScheme = useColorScheme();
-  const theme = Colors[colorScheme] ?? Colors.light;
   return (
-    <>
+    <GuestOnly>
       <StatusBar value="auto" />
       <Stack
         screenOptions={{
@@ -15,9 +12,8 @@ const RootLayout = () => {
           animation: "none",
         }}
       />
-    </>
+    </GuestOnly>
   );
 };
 
 export default RootLayout;
-
