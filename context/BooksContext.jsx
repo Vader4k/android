@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { databases } from "../lib/appwrite";
+import { databases, client } from "../lib/appwrite";
 import { DATABASE_ID, COLLECTION_ID } from "@env";
 import { ID, Permission, Query, Role } from "react-native-appwrite";
 import { useUserContext } from "../context/userContext";
@@ -18,8 +18,8 @@ export const BooksProvider = ({ children }) => {
         [Query.equal("userId", user.$id)]
       );
 
-      setBooks(response.documents)
-      console.table(response.documents)
+      setBooks(response.documents);
+      console.table(response.documents);
     } catch (error) {
       console.error(error);
     }
@@ -27,6 +27,8 @@ export const BooksProvider = ({ children }) => {
 
   async function fetchBookById(id) {
     try {
+      const res = await databases.getDocument(DATABASE_ID, COLLECTION_ID, id);
+      return res;
     } catch (error) {
       console.error(error);
     }
@@ -52,18 +54,39 @@ export const BooksProvider = ({ children }) => {
 
   async function deleteBook(id) {
     try {
+      await databases.deleteDocument(DATABASE_ID, COLLECTION_ID, id);
     } catch (error) {
       console.error(error);
     }
   }
 
-  useEffect(() =>{
+  useEffect(() => {
+    let unsubscribe;
+    const channel = `databases.${DATABASE_ID}.collections.${COLLECTION_ID}.documents`;
+
     if (user) {
-      fetchBooks()
+      fetchBooks();
+
+      unsubscribe = client.subscribe(channel, (response) => {
+        const { payload, events } = response;
+
+        if (events[0].includes("create")) {
+          setBooks((prevBooks) => [...prevBooks, payload]);
+        }
+        if (events[0].includes("delete")) {
+          setBooks((prevBooks) =>
+            prevBooks.filter((book) => book.$id !== payload.$id)
+          );
+        }
+      });
     } else {
-      setBooks([])
+      setBooks([]);
     }
-  },[user])
+
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
+  }, [user]);
 
   return (
     <BooksContext.Provider
